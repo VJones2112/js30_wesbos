@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&display=swap');
+
+
+html, body {
+    margin: 0;
+    font-family: 'Gaegu', cursive;
+
+  }
+
+h1 {
+    text-align: center;
+}
