@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scribble</title>
+  <link rel="stylesheet" href="scribble.css">
+</head>
+
+<body>
+<h1>Scribble</h1>
+<div id="controls">
+    <div id="lineControls">
+        <span>Line Width
+        <button id="lineWidthThick" class="lineWidths">Thick</button></span>
+        <span>
+        <button id="lineWidthThin" class="lineWidths">Thin</button>
+        <button id="lineWidthProgressive" class="lineWidths">Progressive(thin to thick)</button>
+        </span>
+    </div>
+    
+    <div id="colorControls">
+        <span>Color
+        <button id="colorBold" class="colorSchemes">Bold</button>
+        <button id="colorPastel" class="colorSchemes">Pastel</button>
+        </span>
+    </div>
+    
+    <div>
+        <label for="background">Background</label>
+        <input id="background" type="color" name="background" value="#ffffff">
+    </div>
+</div>
+<div id="resetCanvas">
+        <button id="reset">Reset Canvas</button>
+    </div>
+<hr>
+
+<canvas id="draw" width="800" height="800">
+    <div id="canvasDiv"></div>
+</canvas>
+
+
+
+<script src="scribble.js">
+</script>
+
+
+</body>
+</html>
