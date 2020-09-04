@@ -13,8 +13,8 @@ const colorSchemes = document.querySelectorAll('.colorSchemes');
 
 let isDrawing = false; // Only draws when cursor is down
 let direction = true; // Building up
-let lastX = 0; // To draw a line, you need a starting
-let lastY = 0; // x,y and an ending x,y
+let lastX = 0; // To draw a line, you need a starting...
+let lastY = 0; // ...x,y and an ending x,y
 let hue = 0;
 var touchX, touchY;
 
@@ -35,8 +35,6 @@ colorSchemes.forEach(element => element.addEventListener('click', (e) => {
 // The Actual Drawing Function
 function draw(event) {
     if(!isDrawing) return; // Stop the function from running when not moused down
-//    getTouchPosition();
-//    draw(ctx, touchX, touchY, lineChoices);
     ctx.beginPath(); // Starts the line but won't see it yet
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(event.offsetX, event.offsetY);
@@ -51,6 +49,7 @@ function draw(event) {
 
 // This function works but with black nipple
 function drawCircle(ctx, x, y, size) {
+//    if(!isDrawing) return; // Not working to stop for mouse
 //    getTouchPosition();
 //    ctx.fillStyle = 'hue';
 //    hue++;
@@ -108,6 +107,9 @@ function linesAndColors() {
     if (typeof colorScheme === 'undefined') {
         colorScheme = 'black';
     };
+    if (colorScheme === 'colorBlack') {
+        ctx.strokeStyle = 'black';  // BLACK
+    }
     if (colorScheme === 'colorBold') {
         ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;  // BOLD
     } 
@@ -215,6 +217,7 @@ function drawTouch(event) {
 // Event Listeners for Touch?
 canvas.addEventListener('touchmove', drawTouch);
 canvas.addEventListener('touchstart', drawTouch);
+canvas.addEventListener('touchend', () => isDrawing = false);
 //canvas.addEventListener('touchstart', () => {
 //    isDrawing = true;
 //    isDrawing = true;
