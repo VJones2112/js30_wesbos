@@ -10,27 +10,25 @@ ctx.lineCap = 'round'; // I like it w/o these options too
 ctx.globalCompositeOperation = 'xor'; // Blend modes for when colors overlap // xor is awesome Bos originally had multiply
 const lineChoices = document.querySelectorAll('.lineWidths');
 const colorSchemes = document.querySelectorAll('.colorSchemes');
-
 let isDrawing = false; // Only draws when cursor is down
 let direction = true; // Building up
 let lastX = 0; // To draw a line, you need a starting...
 let lastY = 0; // ...x,y and an ending x,y
 let hue = 0;
 var touchX, touchY;
+const colorChoice = document.getElementById('colorChoice');
 
-// This lets me change the lineWidth according to button
+// This lets user change the lineWidth according to button
 lineChoices.forEach(element => element.addEventListener('click', (e) => {
     lineWidth = element.id;
     draw();
-}))
+}));
 
-
-// This lets me change the colorScheme according to button
+// This lets user change the colorScheme according to button
 colorSchemes.forEach(element => element.addEventListener('click', (e) => {
     colorScheme = element.id;
     draw();
-}))
-
+}));
 
 // The Actual Drawing Function
 function draw(event) {
@@ -38,53 +36,18 @@ function draw(event) {
     ctx.beginPath(); // Starts the line but won't see it yet
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(event.offsetX, event.offsetY);
-//    ctx.stroke(); // Won't see anything on page until you call stroke
     [lastX, lastY] =  [event.offsetX, event.offsetY]; // Destructuring an array
     hue++; // Changes the hue color as you draw the line
     linesAndColors();
+    ctx.stroke(); // Won't see anything on page until you call stroke
+}; // end of draw function
 
-    ctx.stroke(); 
-//    event.preventDefault();
-} // end of draw function
-
-// This function works but with black nipple
-function drawCircle(ctx, x, y, size) {
-//    if(!isDrawing) return; // Not working to stop for mouse
-//    getTouchPosition();
-//    ctx.fillStyle = 'hue';
-//    hue++;
-    ctx.beginPath();
-//    ctx.arcTo(x, y, touchX, touchY, size); 
-    ctx.arc(x, y, size, 0, 2* Math.PI); 
-    //arcTo didn't work above?
-    //x, y, radius, start angle, end angle, clockwise = true, counterclockwise = false //200, 150, 100
-//    ctx.stroke()
-    ctx.closePath();
-//    ctx.fill();
-}
-
-// Below doesn't work
-//function touchDrawLine(event) {
-//    getTouchPosition();
-//    ctx.beginPath(); // Starts the line but won't see it yet
-//    ctx.moveTo(lastX, lastY);
-//    ctx.lineTo(event.offsetX, event.offsetY);
-//    [lastX, lastY] =  [event.offsetX, event.offsetY]; 
-//    hue++;
-//    linesAndColors();
-//
-//    ctx.stroke(); 
-//    event.preventDefault();
-//}
-
-// Separated these options into their own function
+// Separated the Line Width and Color options into their own function
 function linesAndColors() {
-    if(hue >= 360) {
-        hue = 0; // Resets, important for the line width
-    }
     if (typeof lineWidth === 'undefined') {
         lineWidth = 50;
     };
+    /*
     if (lineWidth === 'lineWidthProgressive') {
         if(ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
         direction = !direction;
@@ -95,6 +58,7 @@ function linesAndColors() {
             ctx.lineWidth--;
         } 
     }
+    */ //This was a Wes Bos option I deleted.
     if (lineWidth === 'lineWidthThick') {
         ctx.lineWidth = 50;
     };
@@ -103,22 +67,28 @@ function linesAndColors() {
     };   
     if (lineWidth === undefined){
         ctx.lineWidth = 50;
-    }
+    };
+    if(hue >= 360) {
+        hue = 0; // Resets
+    };
     if (typeof colorScheme === 'undefined') {
         colorScheme = 'black';
     };
     if (colorScheme === 'colorBlack') {
         ctx.strokeStyle = 'black';  // BLACK
-    }
+    };
     if (colorScheme === 'colorBold') {
-        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;  // BOLD
-    } 
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;  // BOLD Rainbow
+    };
     if (colorScheme === 'colorPastel') {
-        ctx.strokeStyle = `hsl(${hue}, 90%, 80%)`; // PASTEL
-    } 
-}
+        ctx.strokeStyle = `hsl(${hue}, 90%, 80%)`; // PASTEL Rainbow
+    };
+    if (colorScheme === 'colorChoice') {
+        ctx.strokeStyle = colorChoice.value;
+    };
+};
 
-
+// Get position on touchscreen
 function getTouchPosition(e) {
     if (!e) 
         var e = event;
@@ -127,26 +97,20 @@ function getTouchPosition(e) {
             var touch = e.touches[0];
             touchX = touch.pageX-touch.target.offsetLeft;
             touchY = touch.pageY-touch.target.offsetTop;
-        }
-    }
-}
+        };
+    };
+};
 
-
-
-// Reset Canvas WORKS!!!
-document.getElementById('reset').addEventListener('click', () => ctx.clearRect(0, 0, canvas.width, canvas.height))
-
-
+// Reset Canvas
+document.getElementById('reset').addEventListener('click', () => ctx.clearRect(0, 0, canvas.width, canvas.height));
 
 // The background CSS variable WORKS!!!!
-let backgroundColor = document.getElementById('background').addEventListener('change', colorUpdate)
+let backgroundColor = document.getElementById('background').addEventListener('change', colorUpdate);
 
-
+// This function is only for the background color...
 function colorUpdate() {
-    const suffix = this.dataset.sizing || '';
-    document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix)
-}
-
+    document.documentElement.style.setProperty(`--${this.name}`, this.value);
+};
 
 // Event Listeners for Mouse
 canvas.addEventListener('mousemove', draw);
@@ -158,82 +122,32 @@ canvas.addEventListener('mouseup', () => isDrawing = false);
 canvas.addEventListener('mouseout', () => isDrawing = false); // So if you leave window and come back, doesn't keep drawing, it restarts instead
 
 
-
-
-
-
 /**********************************************
 **********************************************/
-// Draw Function for Touchscreen
-// Declare the Variables
-//var touchX, touchY;
+// Draw Functions for Touchscreen
 
-//// This lets me change the lineWidth according to button
-//lineChoices.forEach(element => element.addEventListener('click', (e) => {
-//    lineWidth = element.id;
-//    draw();
-//}))
-//
-//
-//// This lets me change the colorScheme according to button
-//colorSchemes.forEach(element => element.addEventListener('click', (e) => {
-//    colorScheme = element.id;
-//    draw();
-//}))
-//
-//let touchX, touchY;
-//
+// Draw Connected Circles
+function drawCircle(ctx, x, y, size) {
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, 2* Math.PI); 
+    ctx.closePath();
+};
+
+// Actual Draw Function
 function drawTouch(event) {
-//    console.log('touchstart');
-//    if(!isDrawing) return; 
     getTouchPosition();
     isDrawing = true;
-//    ctx.fillStyle = hue;
-//    [touchX, touchY]=  [touch.offsetX, touch.offsetY];
     drawCircle(ctx, touchX, touchY, 1); // Doesn't work when I put 'lineWidth'
 //    touchDrawLine(); // Keep getting the can't use offsetX for undefined so not working
 //    draw(); // this keeps not working!
     hue++;
     linesAndColors();
-  
     ctx.stroke(); 
     event.preventDefault();
 } // end of draw function
 
-// Event Listeners for Touchscreen
 
-//lineChoices.forEach(element => element.addEventListener('click', (e) => {
-//    lineWidth = element.id;
-//    drawTouch();
-//}))
-
-
-// This lets me change the colorScheme according to button
-//colorSchemes.forEach(element => element.addEventListener('click', (e) => {
-//    colorScheme = element.id;
-//    drawTouch();
-//}))
-
-// Event Listeners for Touch?
+// Event Listeners for Touch
 canvas.addEventListener('touchmove', drawTouch);
 canvas.addEventListener('touchstart', drawTouch);
 canvas.addEventListener('touchend', () => isDrawing = false);
-//canvas.addEventListener('touchstart', () => {
-//    isDrawing = true;
-//    isDrawing = true;
-//     [touchX, touchY]=  [touch.offsetX, touch.offsetY];
-//});
-/*
-canvas.addEventListener('touchstart', () => {
-    isDrawing = true;
-     [lastX, lastY]=  [event.offsetX, event.offsetY];
-});
-*/
-
-//canvas.addEventListener('touchend', () => isDrawing = false);
-//canvas.addEventListener('mouseout', () => isDrawing = false); // So if you leave window and come back, doesn't keep drawing, it restarts instead
-
-
-
-//How would below work on touch screen?
-//canvas.addEventListener('mouseout', () => isDrawing = false); // So if you leave window and come back, doesn't keep drawing, it restarts instead
