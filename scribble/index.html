@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <title>Scribble</title>
   <link rel="stylesheet" href="scribble.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+
+
 </head>
 
 <body>
@@ -16,7 +19,7 @@
         <p>Line Width</p>
         <button id="lineWidthThick" class="lineWidths">Thick</button>
         <button id="lineWidthThin" class="lineWidths">Thin</button>
-        <button id="lineWidthProgressive" class="lineWidths">Progressive</button>
+<!--        <button id="lineWidthProgressive" class="lineWidths">Progressive</button>-->
     </div>
     
        <div id="backgroundAndReset">
@@ -24,16 +27,23 @@
         <label for="background">Background</label>
         <input id="background" type="color" name="background" value="#ffffff">
     </div>
+<!--
+    <div id="undoDiv">
+        <button id="undo">Erase</button>
+    </div>
+-->
     <div id="resetCanvas">
-        <button id="reset">Reset Canvas</button>
+        <button id="reset">Erase Canvas</button>
 </div>
 </div>
     
     <div id="colorControls">
        <p>Color</p>
-       <button id="colorBold" class="colorSchemes">Bold</button>
-       <button id="colorPastel" class="colorSchemes">Pastel</button>
-       <button id="colorBlack" class="colorSchemes">Black</button>
+       <button id="colorBold" class="colorSchemes">Bold Rainbow</button>
+       <button id="colorPastel" class="colorSchemes">Pastel Rainbow</button>
+       <label for="colorChoice">Choose Color</label>
+       <input id="colorChoice" type="color" class="colorSchemes chooseColor" name="colors" value="#ffffff">
+<!--       <button id="colorBlack" class="colorSchemes">Black</button>-->
     </div>
     </div> <!--End controls here?-->
 
